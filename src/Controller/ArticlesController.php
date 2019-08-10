@@ -13,6 +13,17 @@ use App\Controller\AppController;
 class ArticlesController extends AppController
 {
     /**
+     * Initialization hook method.
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Calendar.Calendar');
+    }
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null
@@ -26,6 +37,24 @@ class ArticlesController extends AppController
 
         $this->set(compact('articles'));
     }
+
+    /**
+	 * @param string|null $year
+	 * @param string|null $month
+	 * @return void
+	 */
+	public function calendar($year = null, $month = null) {
+		$this->Calendar->init($year, $month);
+
+		// Fetch calendar items (like events, birthdays, ...)
+		$options = [
+			'year' => $this->Calendar->year(),
+			'month' => $this->Calendar->month(),
+		];
+		$articles = $this->Articles->find('calendar', $options);
+		
+		$this->set(compact('articles'));
+	}
 
     /**
      * View method

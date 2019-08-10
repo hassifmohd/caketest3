@@ -54,6 +54,11 @@ class ArticlesTable extends Table
             'targetForeignKey' => 'tag_id',
             'joinTable' => 'articles_tags'
         ]);
+        $this->addBehavior('Calendar.Calendar', [
+            'field' => 'date_event_start',
+            'endField' => 'date_event_end',
+            'scope' => ['published' => 1],
+        ]);
     }
 
     /**
